@@ -21,7 +21,7 @@ def difficulty_rank(cur_difficulty):
 def parsing(user_url):
     global score
     request = get(user_url)
-    scraping = BeautifulSoup(request.text, 'lxml')
+    scraping = BeautifulSoup(request.text, 'html.parser')
     txt = []
     for i in scraping.findAll('div', attrs={'id': "incorrect"}):
         txt.append(i.text)
@@ -48,7 +48,7 @@ def quiz():
     req = get(input_url)
     result = []
     input_difficulty = 0
-    soup = BeautifulSoup(req.text, 'lxml')
+    soup = BeautifulSoup(req.text, 'html.parser')
     for i in soup.findAll('div', attrs={'id': "main_col"}):
         result.append(i.text)
         input_difficulty = i.find('img')['alt']
