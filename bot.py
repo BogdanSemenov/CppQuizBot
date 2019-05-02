@@ -2,8 +2,8 @@ from requests import get
 from bs4 import BeautifulSoup
 from random import choice
 import telebot
+from telebot.types import KeyboardButton, ReplyKeyboardMarkup
 from config import *
-
 
 token = "864062625:AAHt_xciZildH4u6VkGM8veN_GPzxBh6fjc"
 bot = telebot.TeleBot(token)
@@ -39,6 +39,8 @@ def parsing(user_url):
 # failed_answers = 0
 attempts = 0
 score = 0
+
+
 # quiz_over = False
 
 
@@ -57,7 +59,6 @@ def quiz():
 
 
 res, current_url, difficulty = quiz()
-
 
 answer_1 = 0
 answer_2 = 0
@@ -94,13 +95,13 @@ answer_5 = 'View a hint'
 answer_6 = 'Try another question'
 answer_7 = 'Score'
 
-markup_menu = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-btn_2 = telebot.types.KeyboardButton(answer_2)
-btn_3 = telebot.types.KeyboardButton(answer_3)
-btn_4 = telebot.types.KeyboardButton(answer_4)
-btn_5 = telebot.types.KeyboardButton(answer_5)
-btn_6 = telebot.types.KeyboardButton(answer_6)
-btn_7 = telebot.types.KeyboardButton(answer_7)
+markup_menu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+btn_2 = KeyboardButton(answer_2)
+btn_3 = KeyboardButton(answer_3)
+btn_4 = KeyboardButton(answer_4)
+btn_5 = KeyboardButton(answer_5)
+btn_6 = KeyboardButton(answer_6)
+btn_7 = KeyboardButton(answer_7)
 markup_menu.add(btn_2, btn_3, btn_4, btn_5, btn_6, btn_7)
 
 
@@ -115,25 +116,28 @@ markup_menu.add(btn_2, btn_3, btn_4, btn_5, btn_6, btn_7)
 @bot.message_handler(func=lambda message: True)
 def quiz_play(message):
     global current_url, attempts
-    attempts += 1
-
+    
     if message.text == '/start':
+        attempts += 1
         bot.send_message(message.chat.id, "Difficulty: {}\n\n".format(difficulty_rank(difficulty)) + res,
                          reply_markup=markup_menu)
         bot.send_message(message.chat.id, 'Text your answer if the program is guaranteed to output smth, '
-                         'otherwise choose the correct answer in the menu', reply_markup=markup_menu)
+                                          'otherwise choose the correct answer in the menu', reply_markup=markup_menu)
 
     elif message.text == answer_2:
+        attempts += 1
         new_url = current_url + CE
         output = parsing(new_url)
         bot.reply_to(message, output, reply_markup=markup_menu)
 
     elif message.text == answer_3:
+        attempts += 1
         new_url = current_url + US
         output = parsing(new_url)
         bot.reply_to(message, output, reply_markup=markup_menu)
 
     elif message.text == answer_4:
+        attempts += 1
         new_url = current_url + UD
         output = parsing(new_url)
         bot.reply_to(message, output, reply_markup=markup_menu)
@@ -144,6 +148,7 @@ def quiz_play(message):
         bot.reply_to(message, output, reply_markup=markup_menu)
 
     elif message.text == answer_6:
+        attempts += 1
         next_question, next_url, next_difficulty = quiz()
         current_url = next_url
         next_question = answ(next_question)
@@ -154,6 +159,7 @@ def quiz_play(message):
         bot.send_message(message.chat.id, 'Your score: {} / {}'.format(score, attempts), reply_markup=markup_menu)
 
     else:
+        attempts += 1
         new_url = current_url + OK.format(message.text)
         output = parsing(new_url)
         bot.reply_to(message, output, reply_markup=markup_menu)
@@ -161,4 +167,3 @@ def quiz_play(message):
 
 if __name__ == '__main__':
     bot.polling(none_stop=True)
-# счёт поправить, т.к увеличивает на два
