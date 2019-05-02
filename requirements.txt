@@ -6,4 +6,4 @@ async-timeout==3.0.1
 pandas
 bs4
 telebot
-pyTelegramBotAPI
+pyTelegramBotAPI==3.5.1
