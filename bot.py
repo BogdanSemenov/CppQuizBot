@@ -2,7 +2,6 @@ from requests import get
 from bs4 import BeautifulSoup
 from random import choice
 import telebot
-from telebot import types
 from config import *
 
 
@@ -96,12 +95,12 @@ answer_6 = 'Try another question'
 answer_7 = 'Score'
 
 markup_menu = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-btn_2 = types.KeyboardButton(answer_2)
-btn_3 = types.KeyboardButton(answer_3)
-btn_4 = types.KeyboardButton(answer_4)
-btn_5 = types.KeyboardButton(answer_5)
-btn_6 = types.KeyboardButton(answer_6)
-btn_7 = types.KeyboardButton(answer_7)
+btn_2 = telebot.types.KeyboardButton(answer_2)
+btn_3 = telebot.types.KeyboardButton(answer_3)
+btn_4 = telebot.types.KeyboardButton(answer_4)
+btn_5 = telebot.types.KeyboardButton(answer_5)
+btn_6 = telebot.types.KeyboardButton(answer_6)
+btn_7 = telebot.types.KeyboardButton(answer_7)
 markup_menu.add(btn_2, btn_3, btn_4, btn_5, btn_6, btn_7)
 
 
