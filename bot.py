@@ -94,7 +94,7 @@ answer_5 = 'View a hint'
 answer_6 = 'Try another question'
 answer_7 = 'Score'
 
-markup_menu = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+markup_menu = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
 btn_2 = telebot.types.KeyboardButton(answer_2)
 btn_3 = telebot.types.KeyboardButton(answer_3)
 btn_4 = telebot.types.KeyboardButton(answer_4)
