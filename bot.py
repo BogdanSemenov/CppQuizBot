@@ -4,7 +4,6 @@ from random import choice
 import telebot
 from config import *
 
-token = "864062625:AAHt_xciZildH4u6VkGM8veN_GPzxBh6fjc"
 bot = telebot.TeleBot(token)
 
 
@@ -146,6 +145,3 @@ def quiz_play(message):
         output = parsing(new_url)
         bot.reply_to(message, output, reply_markup=markup_menu)
 
-
-if __name__ == '__main__':
-    bot.polling(none_stop=True)
