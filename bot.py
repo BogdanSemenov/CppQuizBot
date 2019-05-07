@@ -32,15 +32,8 @@ def parsing(user_url):
     return txt[0]
 
 
-# easy_score = 0
-# medium_score = 0
-# hard_score = 0
-# failed_answers = 0
 attempts = 0
 score = 0
-
-
-# quiz_over = False
 
 
 def quiz():
@@ -67,7 +60,6 @@ answer_4 = 0
 
 def answ(result):
     global answer_1, answer_2, answer_3, answer_4
-    # question = result[0][29: 99]
     result = result[0][104: len(result[0]) - 119]
 
     answer_4 = result[len(result) - 24:]
@@ -82,7 +74,6 @@ def answ(result):
     answer_1 = result[len(result) - 37: len(result) - 1]
     result = result[:len(result) - 37]
 
-    # answer = result[len(result) - 9: len(result) - 2]
     result = result[:len(result) - 13]
 
     return result
@@ -102,14 +93,6 @@ btn_5 = telebot.types.KeyboardButton(answer_5)
 btn_6 = telebot.types.KeyboardButton(answer_6)
 btn_7 = telebot.types.KeyboardButton(answer_7)
 markup_menu.add(btn_2, btn_3, btn_4, btn_5, btn_6, btn_7)
-
-
-# @bot.message_handler(commands=['start'])
-# def send_welcome(message):
-#     bot.send_message(message.chat.id, "Difficulty: {}\n\n".format(difficulty_rank(difficulty)) + res,
-#                      reply_markup=markup_menu)
-#     bot.send_message(message.chat.id, 'Text your answer if the program is guaranteed to output smth, '
-#                                       'otherwise choose the correct answer in the menu', reply_markup=markup_menu)
 
 
 @bot.message_handler(func=lambda message: True)
