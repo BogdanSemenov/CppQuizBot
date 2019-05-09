@@ -5,9 +5,17 @@ import telebot
 from config import *
 
 bot = telebot.TeleBot(token)
+attempts = 0
+score = 0
 
 
 def difficulty_rank(cur_difficulty):
+    """
+    transform task's difficulty
+
+    :param cur_difficulty: str
+    :return: str
+    """
     if cur_difficulty == '1':
         return 'Easy'
     elif cur_difficulty == '2':
@@ -16,7 +24,14 @@ def difficulty_rank(cur_difficulty):
         return 'High'
 
 
-def parsing(user_url):
+def check_users_answer(user_url):
+    """
+    check correctness of user's answers
+    and increase his score
+
+    :param user_url: str
+    :return: list
+    """
     global score
     request = get(user_url)
     scraping = BeautifulSoup(request.text, 'html.parser')
@@ -31,11 +46,14 @@ def parsing(user_url):
     return txt[0]
 
 
-attempts = 0
-score = 0
+def quiz_parsing():
+    """
+    Do parsing random C++ questions,
+    difficulty of current  questions
+    and its url from the web-page
 
-
-def quiz():
+    :return: list, str, str
+    """
     user_quiz = choice([i for i in range(1, 251) if i not in numbers])
     input_url = url.format(str(user_quiz))
     req = get(input_url)
@@ -49,15 +67,18 @@ def quiz():
     return result, input_url, input_difficulty
 
 
-res, current_url, difficulty = quiz()
-
-answer_1 = 0
-answer_2 = 0
-answer_3 = 0
-answer_4 = 0
+current_question, current_url, difficulty = quiz_parsing()
 
 
-def answ(result):
+def extract_question_info(result):
+    """
+    Extract all types of answers
+    and the main part of
+    current question
+
+    :param result: list
+    :return: text
+    """
     global answer_1, answer_2, answer_3, answer_4
     result = result[0][104: len(result[0]) - 119]
 
@@ -78,11 +99,18 @@ def answ(result):
     return result
 
 
-res = answ(res)
+def reply_on_answer(cur_message, cur_type):
+    """
+    reply on user's message
 
-answer_5 = 'View a hint'
-answer_6 = 'Try another question'
-answer_7 = 'Score'
+    :param cur_message: str
+    :param cur_type: str
+    :return: answer
+    """
+    new_url = current_url + cur_type
+    output = check_users_answer(new_url)
+    bot.reply_to(cur_message, output, reply_markup=markup_menu)
+
 
 markup_menu = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
 btn_2 = telebot.types.KeyboardButton(answer_2)
@@ -94,45 +122,45 @@ btn_7 = telebot.types.KeyboardButton(answer_7)
 markup_menu.add(btn_2, btn_3, btn_4, btn_5, btn_6, btn_7)
 
 
+current_question = extract_question_info(current_question)
+
+
 @bot.message_handler(func=lambda message: True)
 def quiz_play(message):
+    """
+    process of game
+
+    :param message: text
+    :return: text
+    """
     global current_url, attempts
-    
+
     if message.text == '/start':
-        attempts += 1
-        bot.send_message(message.chat.id, "Difficulty: {}\n\n".format(difficulty_rank(difficulty)) + res,
-                         reply_markup=markup_menu)
+        bot.send_message(message.chat.id, "Difficulty: {}\n\n".format(difficulty_rank(difficulty)) +
+                         current_question, reply_markup=markup_menu)
         bot.send_message(message.chat.id, 'Text your answer if the program is guaranteed to output smth, '
                                           'otherwise choose the correct answer in the menu', reply_markup=markup_menu)
 
     elif message.text == answer_2:
         attempts += 1
-        new_url = current_url + CE
-        output = parsing(new_url)
-        bot.reply_to(message, output, reply_markup=markup_menu)
+        reply_on_answer(message, CE)
 
     elif message.text == answer_3:
         attempts += 1
-        new_url = current_url + US
-        output = parsing(new_url)
-        bot.reply_to(message, output, reply_markup=markup_menu)
+        reply_on_answer(message, US)
 
     elif message.text == answer_4:
         attempts += 1
-        new_url = current_url + UD
-        output = parsing(new_url)
-        bot.reply_to(message, output, reply_markup=markup_menu)
+        reply_on_answer(message, UD)
 
     elif message.text == answer_5:
-        new_url = current_url + HINT
-        output = parsing(new_url)
-        bot.reply_to(message, output, reply_markup=markup_menu)
+        reply_on_answer(message, HINT)
 
     elif message.text == answer_6:
         attempts += 1
-        next_question, next_url, next_difficulty = quiz()
+        next_question, next_url, next_difficulty = quiz_parsing()
         current_url = next_url
-        next_question = answ(next_question)
+        next_question = extract_question_info(next_question)
         bot.reply_to(message, "Difficulty: {}\n\n".format(difficulty_rank(next_difficulty)) + next_question,
                      reply_markup=markup_menu)
 
@@ -142,6 +170,5 @@ def quiz_play(message):
     else:
         attempts += 1
         new_url = current_url + OK.format(message.text)
-        output = parsing(new_url)
+        output = check_users_answer(new_url)
         bot.reply_to(message, output, reply_markup=markup_menu)
-
