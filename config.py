@@ -17,11 +17,3 @@ numbers_1 = [10, 19, 20, 21, 22, 23, 34, 36, 39, 40, 43, 45, 46, 47, 50, 51, 108
              128]
 numbers_2 = [i for i in range(53, 105)]
 numbers = numbers_2 + numbers_1
-
-answer_1 = 0
-answer_2 = 0
-answer_3 = 0
-answer_4 = 0
-answer_5 = 'View a hint'
-answer_6 = 'Try another question'
-answer_7 = 'Score'
