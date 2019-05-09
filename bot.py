@@ -7,6 +7,13 @@ from config import *
 bot = telebot.TeleBot(token)
 attempts = 0
 score = 0
+answer_1 = 0
+answer_2 = 0
+answer_3 = 0
+answer_4 = 0
+answer_5 = 'View a hint'
+answer_6 = 'Try another question'
+answer_7 = 'Score'
 
 
 def difficulty_rank(cur_difficulty):
