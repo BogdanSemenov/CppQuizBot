@@ -7,13 +7,6 @@ from config import *
 bot = telebot.TeleBot(token)
 attempts = 0
 score = 0
-answer_1 = 0
-answer_2 = 0
-answer_3 = 0
-answer_4 = 0
-answer_5 = 'View a hint'
-answer_6 = 'Try another question'
-answer_7 = 'Score'
 
 
 def difficulty_rank(cur_difficulty):
@@ -106,6 +99,9 @@ def extract_question_info(result):
     return result
 
 
+current_question = extract_question_info(current_question)
+
+
 def reply_on_answer(cur_message, cur_type):
     """
     reply on user's message
@@ -127,9 +123,6 @@ btn_5 = telebot.types.KeyboardButton(answer_5)
 btn_6 = telebot.types.KeyboardButton(answer_6)
 btn_7 = telebot.types.KeyboardButton(answer_7)
 markup_menu.add(btn_2, btn_3, btn_4, btn_5, btn_6, btn_7)
-
-
-current_question = extract_question_info(current_question)
 
 
 @bot.message_handler(func=lambda message: True)
