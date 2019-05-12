@@ -104,6 +104,16 @@ def reply_on_answer(cur_message, cur_type):
 
 
 @add_method(bot)
+def is_url_empty(message):
+    if not bot.main_url:
+        bot.send_message(message.chat.id, "You didn't choose any question yet. Please, "
+                                          "press button 'Try next question'")
+        return True
+
+    return False
+
+
+@add_method(bot)
 def make_button():
     bot.markup_menu = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     bot.button_1 = telebot.types.KeyboardButton(bot.answer_1)
@@ -134,17 +144,21 @@ def quiz_play(message):
                          'otherwise choose the correct answer in the menu', reply_markup=bot.markup_menu)
 
     elif message.text == bot.answer_1:
-        bot.attempts += 1
-        reply_on_answer(message, CE)
+        if not bot.is_empty_url():
+            bot.attempts += 1
+            reply_on_answer(message, CE)
 
     elif message.text == bot.answer_2:
-        reply_on_answer(message, US)
+        if not bot.is_empty_url():
+            reply_on_answer(message, US)
 
     elif message.text == bot.answer_3:
-        reply_on_answer(message, UD)
+        if not bot.is_empty_url():
+            reply_on_answer(message, UD)
 
     elif message.text == bot.answer_4:
-        reply_on_answer(message, HINT)
+        if not bot.is_empty_url():
+            reply_on_answer(message, HINT)
 
     elif message.text == bot.answer_5:
         bot.quiz_parsing()
@@ -158,6 +172,7 @@ def quiz_play(message):
                          reply_markup=bot.markup_menu)
 
     else:
-        new_url = bot.main_url + OK.format(message.text)
-        output = check_users_answer(new_url)
-        bot.send_message(message.chat.id, output, reply_markup=bot.markup_menu)
+        if not bot.is_url_empty(message):
+            new_url = bot.main_url + OK.format(message.text)
+            output = check_users_answer(new_url)
+            bot.send_message(message.chat.id, output, reply_markup=bot.markup_menu)
