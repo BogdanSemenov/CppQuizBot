@@ -2,7 +2,7 @@
 This Telegram Bot was created to improve your C++ skills. Join it: @QuizCppBot.
 
 <p align="center">
-  <img src="C++Picture.jpg" width="150">
+  <img src="C++Picture.jpg" width="200">
 </p>
 
 ## How to use it?
