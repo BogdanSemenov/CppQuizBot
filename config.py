@@ -9,7 +9,7 @@ HINT = "?show_hint=1"
 
 url = "http://cppquiz.org/quiz/question/{}"
 
-token = "833165112:AAGLeIZE_mXXrrqL38wv_QnyUBAviRSpgG4"
+token = "864062625:AAHt_xciZildH4u6VkGM8veN_GPzxBh6fjc"
 
 bot = telebot.TeleBot(token)
 setattr(bot, "attempts", 0)
