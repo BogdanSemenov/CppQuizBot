@@ -1,3 +1,6 @@
+from functools import wraps
+import telebot
+
 OK = "?result=OK&answer={}&did_answer=Answer"
 CE = "?result=CE&answer=&did_answer=Answer"
 UD = "?result=UD&answer=&did_answer=Answer"
@@ -6,7 +9,27 @@ HINT = "?show_hint=1"
 
 url = "http://cppquiz.org/quiz/question/{}"
 
-token = "864062625:AAHt_xciZildH4u6VkGM8veN_GPzxBh6fjc"
+token = "833165112:AAGLeIZE_mXXrrqL38wv_QnyUBAviRSpgG4"
+
+bot = telebot.TeleBot(token)
+setattr(bot, "attempts", 0)
+setattr(bot, "score", 0)
+setattr(bot, "main_question", str())
+setattr(bot, "main_url", str())
+setattr(bot, "difficulty", str())
+setattr(bot, "answer_1", str())
+setattr(bot, "answer_2", str())
+setattr(bot, "answer_3", str())
+setattr(bot, "answer_4", 'View a hint')
+setattr(bot, "answer_5", 'Try another question')
+setattr(bot, "answer_6", 'Score')
+setattr(bot, "markup_menu", 0)
+setattr(bot, "button_1", str())
+setattr(bot, "button_2", str())
+setattr(bot, "button_3", str())
+setattr(bot, "button_4", str())
+setattr(bot, "button_5", str())
+setattr(bot, "button_6", str())
 
 
 # Numbers of questions aren't available in the site that I'm parsing
@@ -17,3 +40,13 @@ numbers_1 = [10, 19, 20, 21, 22, 23, 34, 36, 39, 40, 43, 45, 46, 47, 50, 51, 108
              128]
 numbers_2 = [i for i in range(53, 105)]
 numbers = numbers_2 + numbers_1
+
+
+def add_method(cls):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+        setattr(cls, func.__name__, wrapper)
+        return func
+    return decorator
