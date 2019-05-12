@@ -106,8 +106,8 @@ def reply_on_answer(cur_message, cur_type):
 @add_method(bot)
 def is_url_empty(message):
     if not bot.main_url:
-        bot.send_message(message.chat.id, "You didn't choose any question yet. Please, "
-                                          "press button 'Try next question'")
+        bot.send_message(message.chat.id, "You didn't choose any questions yet. Please, "
+                                          "press button 'Try next question' or /start ")
         return True
 
     return False
