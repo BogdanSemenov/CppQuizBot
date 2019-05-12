@@ -1,5 +1,6 @@
 # CppQuizBot
 This Telegram Bot was created to improve your C++ skills. Join it: @QuizCppBot.
+![Screenshot](C++Picture.jpg)
 
 ## How to use it?
 You get a message with C++ code. If you think that this code is guaranteed to output you need to text your answer, otherwise choose correct answer from suggested buttons. If your answer is correct you get a point.
