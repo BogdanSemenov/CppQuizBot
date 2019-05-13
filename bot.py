@@ -144,20 +144,20 @@ def quiz_play(message):
                          'otherwise choose the correct answer in the menu', reply_markup=bot.markup_menu)
 
     elif message.text == bot.answer_1:
-        if not bot.is_empty_url():
+        if not bot.is_url_empty():
             bot.attempts += 1
             reply_on_answer(message, CE)
 
     elif message.text == bot.answer_2:
-        if not bot.is_empty_url():
+        if not bot.is_url_empty():
             reply_on_answer(message, US)
 
     elif message.text == bot.answer_3:
-        if not bot.is_empty_url():
+        if not bot.is_url_empty():
             reply_on_answer(message, UD)
 
     elif message.text == bot.answer_4:
-        if not bot.is_empty_url():
+        if not bot.is_url_empty():
             reply_on_answer(message, HINT)
 
     elif message.text == bot.answer_5:
